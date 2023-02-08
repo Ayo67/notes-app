@@ -1,6 +1,11 @@
-import java.util.Scanner
+import java.lang.System.exit
+import java.util.*
 
 val scanner = Scanner(System.`in`)
+
+fun main(args: Array<String>){
+    runMenu()
+}
 
 fun mainMenu() : Int {
     println("")
@@ -34,22 +39,23 @@ fun runMenu() {
 }
 
 fun exitApp() {
-    TODO("Not yet implemented")
+    println("Exiting...bye")
+    exit(0)
 }
 
 fun deleteNote() {
-    TODO("Not yet implemented")
+    println("You chose Delete Note")
 }
 
 fun updateNote() {
-    TODO("Not yet implemented")
+    println("You chose Update Note")
 }
 
 fun addNote() {
     println("You chose Add note")
 }
 fun listNote() {
-    TODO("Not yet implemented")
+    println("You chose Delete Note")
 }
 
 
