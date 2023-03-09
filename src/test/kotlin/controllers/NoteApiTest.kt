@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Nested
+
 
 class NoteApiTest {
     private  var learnKotlin: Note? = null
@@ -60,6 +62,23 @@ class NoteApiTest {
         assertTrue(emptyNotes!!.add(newNote))
         assertEquals(1, emptyNotes!!.numberOfNotes())
         assertEquals(newNote, emptyNotes!!.findNote(emptyNotes!!.numberOfNotes() - 1))
+    }
+
+    @Test
+    fun `listAllNotes returns No Notes Stored message when ArrayList is empty`(){
+        assertEquals(0, emptyNotes!!.numberOfNotes())
+        assertTrue(emptyNotes!!.listAllNotes().lowercase().contains("no notes"))
+    }
+
+    @Test
+    fun `listAllNotes returns Notes when ArrayList has notes stored`(){
+        assertEquals(5, populatedNotes!!.numberOfNotes())
+        val notesString = populatedNotes!!.listAllNotes().lowercase()
+        assertTrue(notesString.contains("learning kotlin"))
+        assertTrue(notesString.contains("code app"))
+        assertTrue(notesString.contains("test app"))
+        assertTrue(notesString.contains("swim"))
+        assertTrue(notesString.contains("summer holiday"))
     }
 
 
