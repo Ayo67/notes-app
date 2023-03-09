@@ -7,14 +7,15 @@ import utils.ScannerInput.readNextLine
 import java.lang.System.exit
 
 private val logger = KotlinLogging.logger {}
-private val noteApi =NoteApi()
+private val noteApi = NoteApi()
 
-fun main(args: Array<String>){
+fun main(args: Array<String>) {
     runMenu()
 }
 
-fun mainMenu() : Int {
-    return readNextInt(""" 
+fun mainMenu(): Int {
+    return readNextInt(
+        """ 
          > ----------------------------------
          > |        NOTE KEEPER APP         |
          > ----------------------------------
@@ -26,7 +27,8 @@ fun mainMenu() : Int {
          > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
-         > ==>> """.trimMargin(">"))
+         > ==>> """.trimMargin(">")
+    )
 }
 
 
@@ -50,26 +52,27 @@ fun exitApp() {
 }
 
 fun deleteNote() {
-    logger.info{ "deleteNote() function invoked"}
+    logger.info { "deleteNote() function invoked" }
 }
 
 fun updateNote() {
-    logger.info{ "updateNote() function invoked"}
+    logger.info { "updateNote() function invoked" }
 }
 
 fun addNote() {
     //logger.info{ "addNote() function invoked"}
-    val noteTitle = readNextLine( "Enter a title for the note")
+    val noteTitle = readNextLine("Enter a title for the note")
     val notePriority = readNextInt("Enter a priority (1-low, 2, 3, 4, 5-high): ")
-    val noteCategory = readNextLine( "Enter a category for the note")
+    val noteCategory = readNextLine("Enter a category for the note")
     val isAdded = noteApi.add(Note(noteTitle, notePriority, noteCategory, false))
 
-    if(isAdded){
+    if (isAdded) {
         println("Added Successfully")
-    }else {
+    } else {
         println("Add Failed")
     }
 }
+
 fun listNotes() {
     //logger.info{ "listNote() function invoked"}
     println(noteApi.listAllNotes())
