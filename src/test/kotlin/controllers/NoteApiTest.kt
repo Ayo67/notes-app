@@ -81,6 +81,12 @@ class NoteApiTest {
         assertTrue(notesString.contains("summer holiday"))
     }
 
+    @Test
+    fun `listActiveNotes returns no active notes stored when ArrayList is empty`(){
+        assertEquals(0,emptyNotes!!.numberOfActiveNotes())
+        assertTrue(emptyNotes!!.listActiveNotes().lowercase().contains("no active notes "))
+    }
+
 
 
 }
