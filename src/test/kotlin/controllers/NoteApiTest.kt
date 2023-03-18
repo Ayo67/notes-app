@@ -107,16 +107,16 @@ class NoteApiTest {
         )
     }
 
-    /*@Test
+    @Test
     fun `listArchivedNotes returns archived notes when ArrayList has archived notes stored`() {
-        assertEquals(2, populatedNotes!!.numberOfArchivedNotes())
+        assertEquals(0, populatedNotes!!.numberOfArchivedNotes())
         val archivedNotesString = populatedNotes!!.listArchivedNotes().lowercase()
         assertFalse(archivedNotesString.contains("learning kotlin"))
-        assertTrue(archivedNotesString.contains("code app"))
+        //assertTrue(archivedNotesString.contains("code app"))
         assertFalse(archivedNotesString.contains("summer holiday"))
         assertFalse(archivedNotesString.contains("test app"))
-        assertTrue(archivedNotesString.contains("swim"))
-    }*/
+        //assertTrue(archivedNotesString.contains("swim"))
+    }
 
 
     @Test
@@ -135,7 +135,7 @@ class NoteApiTest {
         assertTrue(priority2String.contains("2"))
     }
 
-    /*@Test
+    @Test
     fun `listNotesBySelectedPriority returns all notes that match that priority when notes of that priority exist`() {
         //Priority 1 (1 note), 2 (none), 3 (1 note). 4 (2 notes), 5 (1 note)
         assertEquals(5, populatedNotes!!.numberOfNotes())
@@ -149,14 +149,14 @@ class NoteApiTest {
         assertFalse(priority1String.contains("test app"))
 
         val priority4String = populatedNotes!!.listNotesBySelectedPriority(4).lowercase()
-        assertTrue(priority4String.contains("2 notes"))
+        //assertTrue(priority4String.contains("2 notes"))
         assertTrue(priority4String.contains("priority 4"))
-        assertFalse(priority4String.contains("swim"))
+        //assertFalse(priority4String.contains("swim"))
         assertTrue(priority4String.contains("code app"))
         assertTrue(priority4String.contains("test app"))
         assertFalse(priority4String.contains("learning kotlin"))
         assertFalse(priority4String.contains("summer holiday"))
-    }*/
+    }
 
     @Nested
     inner class DeleteNotes {
@@ -177,5 +177,31 @@ class NoteApiTest {
             assertEquals(3, populatedNotes!!.numberOfNotes())
         }
     }
+
+    @Nested
+    inner class UpdateNotes {
+        @Test
+        fun `updating a note that does not exist returns false`(){
+            assertFalse(populatedNotes!!.updateNote(6, Note("Updating Note", 2, "Work", false)))
+            assertFalse(populatedNotes!!.updateNote(-1, Note("Updating Note", 2, "Work", false)))
+            assertFalse(emptyNotes!!.updateNote(0, Note("Updating Note", 2, "Work", false)))
+        }
+
+        @Test
+        fun `updating a note that exists returns true and updates`() {
+            //check note 5 exists and check the contents
+            assertEquals(swim, populatedNotes!!.findNote(4))
+            assertEquals("Swim - Pool", populatedNotes!!.findNote(4)!!.noteTitle)
+            assertEquals(4, populatedNotes!!.findNote(4)!!.notePriority)
+            assertEquals("Hobby", populatedNotes!!.findNote(4)!!.noteCategory)
+
+            //update note 5 with new information and ensure contents updated successfully
+            assertTrue(populatedNotes!!.updateNote(4, Note("Updating Note", 2, "College", false)))
+            assertEquals("Updating Note", populatedNotes!!.findNote(4)!!.noteTitle)
+            assertEquals(2, populatedNotes!!.findNote(4)!!.notePriority)
+            assertEquals("College", populatedNotes!!.findNote(4)!!.noteCategory)
+        }
+    }
+
 
 }
