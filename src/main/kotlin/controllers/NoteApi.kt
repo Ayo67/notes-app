@@ -102,13 +102,23 @@ class NoteAPI(serializerType: XMLSerializer) {
         serializer.write(notes)
     }
 
-
-
     private fun formatListString(notesToFormat: List<Note>): String =
         notesToFormat
             .joinToString(separator = "\n") { note ->
                 notes.indexOf(note).toString() + ": " + note.toString()
             }
+
+    fun ArchiveNote(indexToArchive: Int): Boolean {
+        if (isValidIndex(indexToArchive)) {
+            val noteToArchive = notes[indexToArchive]
+            if (!noteToArchive.isNoteArchived) {
+                noteToArchive.isNoteArchived = true
+                return true
+            }
+        }
+        return false
+    }
+
 }
 
 
