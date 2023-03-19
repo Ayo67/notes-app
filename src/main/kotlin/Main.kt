@@ -1,13 +1,17 @@
-import controllers.NoteApi
+import controllers.NoteAPI
 import models.Note
 import mu.KotlinLogging
-import utils.ScannerInput
+import persistence.XMLSerializer
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
+import java.io.File
 import java.lang.System.exit
 
 private val logger = KotlinLogging.logger {}
-private val noteApi = NoteApi()
+private val noteAPI = NoteAPI(XMLSerializer(File("notes.xml")))
+
+
+
 
 fun main(args: Array<String>) {
     runMenu()
@@ -25,6 +29,9 @@ fun mainMenu(): Int {
          > |   3) Update a note             |
          > |   4) Delete a note             |
          > ----------------------------------
+         > |   20) Save                      |
+         > |   21) Load                     |
+         >> ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
          > ==>> """.trimMargin(">")
@@ -40,6 +47,8 @@ fun runMenu() {
             2 -> listNotes()
             3 -> updateNote()
             4 -> deleteNote()
+            20 -> save()
+            21 -> load()
             0 -> exitApp()
             else -> println("Invalid option entered:  ${option}")
         }
@@ -54,11 +63,11 @@ fun exitApp() {
 fun deleteNote(){
     //logger.info { "deleteNotes() function invoked" }
     listNotes()
-    if (noteApi.numberOfNotes() > 0) {
+    if (noteAPI.numberOfNotes() > 0) {
         //only ask the user to choose the note to delete if notes exist
         val indexToDelete = readNextInt("Enter the index of the note to delete: ")
         //pass the index of the note to NoteAPI for deleting and check for success.
-        val noteToDelete = noteApi.deleteNote(indexToDelete)
+        val noteToDelete = noteAPI.deleteNote(indexToDelete)
         if (noteToDelete != null) {
             println("Delete Successful! Deleted note: ${noteToDelete.noteTitle}")
         } else {
@@ -71,16 +80,16 @@ fun deleteNote(){
 fun updateNote() {
     //logger.info { "updateNotes() function invoked" }
     listNotes()
-    if (noteApi.numberOfNotes() > 0) {
+    if (noteAPI.numberOfNotes() > 0) {
         //only ask the user to choose the note if notes exist
         val indexToUpdate = readNextInt("Enter the index of the note to update: ")
-        if (noteApi.isValidIndex(indexToUpdate)) {
+        if (noteAPI.isValidIndex(indexToUpdate)) {
             val noteTitle = readNextLine("Enter a title for the note: ")
             val notePriority = readNextInt("Enter a priority (1-low, 2, 3, 4, 5-high): ")
             val noteCategory = readNextLine("Enter a category for the note: ")
 
             //pass the index of the note and the new note details to NoteAPI for updating and check for success.
-            if (noteApi.updateNote(indexToUpdate, Note(noteTitle, notePriority, noteCategory, false))){
+            if (noteAPI.updateNote(indexToUpdate, Note(noteTitle, notePriority, noteCategory, false))){
                 println("Update Successful")
             } else {
                 println("Update Failed")
@@ -97,7 +106,7 @@ fun addNote() {
     val noteTitle = readNextLine("Enter a title for the note: ")
     val notePriority = readNextInt("Enter a priority (1-low, 2, 3, 4, 5-high): ")
     val noteCategory = readNextLine("Enter a category for the note:")
-    val isAdded = noteApi.add(Note(noteTitle, notePriority, noteCategory, false))
+    val isAdded = noteAPI.add(Note(noteTitle, notePriority, noteCategory, false))
 
     if (isAdded) {
         println("Added Successfully")
@@ -108,8 +117,25 @@ fun addNote() {
 
 fun listNotes() {
     //logger.info{ "listNote() function invoked"}
-    println(noteApi.listAllNotes())
+    println(noteAPI.listAllNotes())
 }
+
+fun save() {
+    try {
+        noteAPI.store()
+    } catch (e: Exception) {
+        System.err.println("Error writing to file: $e")
+    }
+}
+
+fun load() {
+    try {
+        noteAPI.load()
+    } catch (e: Exception) {
+        System.err.println("Error reading from file: $e")
+    }
+}
+
 
 
 
