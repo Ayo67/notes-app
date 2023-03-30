@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.8.0"
+    id("org.jetbrains.dokka") version "1.6.10"
     application
 }
 
@@ -20,6 +21,8 @@ dependencies {
     //For Streaming to XML and JSON
     implementation("com.thoughtworks.xstream:xstream:1.4.18")
     implementation("org.codehaus.jettison:jettison:1.4.1")
+    // For generating a Dokka site from Kdoc
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.10")
 
 }
 

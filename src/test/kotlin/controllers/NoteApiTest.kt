@@ -249,7 +249,7 @@ class NoteAPITest {
         }
     }
 
-   /* @Test
+  /* @Test
     fun `saving and loading an empty collection in JSON doesn't crash app`() {
         // Saving an empty notes.json file.
         val storingNotes = NoteAPI(JSONSerializer(File("notes.json")))
